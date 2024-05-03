@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AngularMaterialApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HangfireController : ControllerBase
+    public class HangfireTestController(IBackgroundJobClient jobClient) : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            jobClient.Enqueue(() => Console.WriteLine("Job Client"));
+            return Ok("Hello Hangfire Endpoint");
         }
     }
 }

@@ -5,6 +5,6 @@ Accept: application/json
 
 ###
 
-GET {{AngularMaterialApi_HostAddress}}/hangfire
+GET {{AngularMaterialApi_HostAddress}}/hangfiretest
 
 ###

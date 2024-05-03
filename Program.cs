@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -23,6 +24,14 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddHangfire(x =>
+    x.UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseInMemoryStorage()
+    );
+
+builder.Services.AddHangfireServer(x => x.SchedulePollingInterval =  TimeSpan.FromSeconds(3));
+
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -36,5 +45,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
 
 app.Run();
