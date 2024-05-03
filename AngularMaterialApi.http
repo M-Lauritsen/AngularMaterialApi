@@ -1,6 +1,10 @@
-@AngularMaterialApi_HostAddress = http://localhost:5183
+@AngularMaterialApi_HostAddress = https://localhost:7089
 
 GET {{AngularMaterialApi_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{AngularMaterialApi_HostAddress}}/hangfire
 
 ###

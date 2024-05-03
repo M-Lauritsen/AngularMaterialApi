@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -19,12 +15,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                        policy =>
-                        {
-                            policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
-                            .AllowAnyHeader() // Allow any header in actual request
-                  .AllowCredentials(); // Allow credentials (if applicable);
-                        });
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
+            .AllowAnyHeader() // Allow any header in actual request
+            .AllowCredentials(); // Allow credentials (if applicable);
+        });
 });
 
 var app = builder.Build();
