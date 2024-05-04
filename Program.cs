@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Hangfire;
+using AngularMaterialApi.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -32,6 +33,8 @@ builder.Services.AddHangfire(x =>
 
 builder.Services.AddHangfireServer(x => x.SchedulePollingInterval =  TimeSpan.FromSeconds(3));
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -45,6 +48,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<PressenceHub>("hubs/pressence");
 
 app.UseHangfireDashboard();
 
