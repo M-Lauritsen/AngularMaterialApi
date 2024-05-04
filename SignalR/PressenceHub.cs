@@ -9,10 +9,10 @@ namespace AngularMaterialApi.SignalR
     {
         public override async Task OnConnectedAsync()
         {
-            var isOnline = await _pressenceTracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
+            var isOnline = await _pressenceTracker.UserConnected(Context.User?.GetUsername(), Context.ConnectionId);
             if (isOnline)
             {
-                await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
+                await Clients.Others.SendAsync("UserIsOnline", Context.User?.GetUsername());
             }
 
             var currentUsers = await _pressenceTracker.GetOnlineUsers();
@@ -21,11 +21,11 @@ namespace AngularMaterialApi.SignalR
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var isOffline = await _pressenceTracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
+            var isOffline = await _pressenceTracker.UserDisconnected(Context.User?.GetUsername(), Context.ConnectionId);
 
             if (isOffline)
             {
-                await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
+                await Clients.Others.SendAsync("UserIsOffline", Context.User?.GetUsername());
             }
 
             await base.OnDisconnectedAsync(exception);

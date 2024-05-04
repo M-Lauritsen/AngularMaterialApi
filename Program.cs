@@ -21,7 +21,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
             .AllowAnyHeader() // Allow any header in actual request
-            .AllowCredentials(); // Allow credentials (if applicable);
+            .AllowCredentials() // Allow credentials (if applicable);
+            .AllowAnyMethod();
         });
 });
 
@@ -33,6 +34,7 @@ builder.Services.AddHangfire(x =>
 
 builder.Services.AddHangfireServer(x => x.SchedulePollingInterval =  TimeSpan.FromSeconds(3));
 
+builder.Services.AddSingleton<PressencTracker>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
