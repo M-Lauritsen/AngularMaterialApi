@@ -46,13 +46,13 @@ namespace AngularMaterialApi.SignalR
             await _presenceTracker.UpdateUserRoute(username, connectionId, route);
 
             var usersOnPage = await _presenceTracker.GetUsersOnPage(route);
-            await Clients.Group(route).SendAsync("UsersOnPage", usersOnPage);
+            await Clients.Group(route).SendAsync("UsersOnPage", route, usersOnPage); // Include route
 
             // Update users on the old page
             if (!string.IsNullOrEmpty(oldRoute) && oldRoute != route)
             {
                 var usersOnOldPage = await _presenceTracker.GetUsersOnPage(oldRoute);
-                await Clients.Group(oldRoute).SendAsync("UsersOnPage", usersOnOldPage);
+                await Clients.Group(oldRoute).SendAsync("UsersOnPage", oldRoute, usersOnOldPage); // Include old route
             }
         }
     }
