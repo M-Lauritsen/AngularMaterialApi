@@ -50,7 +50,7 @@ builder.Services.AddHangfire(x =>
 
 builder.Services.AddHangfireServer(x => x.SchedulePollingInterval =  TimeSpan.FromSeconds(3));
 
-builder.Services.AddSingleton<PressencTracker>();
+builder.Services.AddSingleton<PresenceTracker>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
@@ -67,7 +67,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<PressenceHub>("hubs/pressence");
+app.MapHub<PresenceHub>("hubs/presence");
 
 app.UseHangfireDashboard();
 
