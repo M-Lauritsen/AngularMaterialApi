@@ -30,5 +30,30 @@ namespace AngularMaterialApi.SignalR
 
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task UpdateUserRoute(string route)
+        {
+            var connectionId = Context.ConnectionId;
+            var username = Context.User?.GetUsername();
+
+            var oldRoute = await _presenceTracker.GetUserRoute(connectionId);
+            if (!string.IsNullOrEmpty(oldRoute) && oldRoute != route)
+            {
+                await Groups.RemoveFromGroupAsync(connectionId, oldRoute);
+            }
+
+            await Groups.AddToGroupAsync(connectionId, route);
+            await _presenceTracker.UpdateUserRoute(username, connectionId, route);
+
+            var usersOnPage = await _presenceTracker.GetUsersOnPage(route);
+            await Clients.Group(route).SendAsync("UsersOnPage", usersOnPage);
+
+            // Update users on the old page
+            if (!string.IsNullOrEmpty(oldRoute) && oldRoute != route)
+            {
+                var usersOnOldPage = await _presenceTracker.GetUsersOnPage(oldRoute);
+                await Clients.Group(oldRoute).SendAsync("UsersOnPage", usersOnOldPage);
+            }
+        }
     }
 }
